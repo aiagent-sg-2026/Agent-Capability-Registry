@@ -1,1 +1,1 @@
-{"name":"@acr/factory","version":"0.1.0","main":"dist/index.js","types":"dist/index.d.ts"}
+{"name":"@acr/factory","version":"0.1.0","main":"dist/index.js","types":"dist/index.d.ts","bin":{"factory":"dist/cli.js"}}

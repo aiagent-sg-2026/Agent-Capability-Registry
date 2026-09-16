@@ -1,0 +1,9 @@
+[Unit]
+Description=Run Package Factory every 15 minutes
+[Timer]
+OnCalendar=*:0/15
+Persistent=true
+RandomizedDelaySec=30s
+Unit=agent-capability-registry-factory.service
+[Install]
+WantedBy=timers.target

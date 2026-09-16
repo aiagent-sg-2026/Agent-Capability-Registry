@@ -1,0 +1,16 @@
+[Unit]
+Description=Agent Capability Registry Package Factory (one bounded cycle)
+After=network-online.target
+Wants=network-online.target
+[Service]
+Type=oneshot
+User=ai-agent
+Group=ai-agent
+WorkingDirectory=/srv/agent-workstation/workspaces/agent-capability-registry
+ExecStart=/usr/local/bin/node /srv/agent-workstation/workspaces/agent-capability-registry/packages/factory/dist/cli.js once
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=read-only
+PrivateTmp=true
+ReadWritePaths=/srv/agent-workstation/state/agent-capability-registry-factory
+# No secret environment is required; use a drop-in only for non-secret ACR_FACTORY_* overrides.
