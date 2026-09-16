@@ -1,0 +1,1 @@
+{"name":"agent-capability-registry","private":true,"version":"0.1.0","workspaces":["packages/*"],"scripts":{"build":"tsc -b && node packages/package-schema/copy-schema.mjs","typecheck":"tsc -b --pretty false","test":"npm run build && node --test test/*.test.mjs","cap":"node packages/cli/dist/index.js"},"devDependencies":{"@types/node":"^22.0.0","typescript":"^5.7.0"}}

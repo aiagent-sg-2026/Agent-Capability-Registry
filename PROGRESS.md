@@ -1,0 +1,5 @@
+# Progress
+
+- Completed and verified: strict schema-driven manifest validation with recursive additional-property rejection; package file allowlisting with traversal, symlink, and non-regular-file rejection; evaluator runtime-artifact hashing; evaluator mismatch diagnostics and UNKNOWN handling for malformed evidence; bounded SQL heuristics with false-positive controls; gate-injected factory stop-on-failure behavior; version-preserving, collision-safe, idempotent installation receipts.
+- Completed verification: `npm run typecheck`, `npm run build`, `npm test` (10 passing tests), example validate/verify, install smoke/idempotency, and adversarial hook/extra-file/traversal/symlink CLI exits (all nonzero), including validation from a foreign cwd. Integrity binds `capability.json` and all declared content files.
+- Deferred: remote registry, signing/attestation, full SQL parser, endpoint integration, and persistent upgrade history/rollback UI. SQL review remains explicitly heuristic and does not claim full parsing.

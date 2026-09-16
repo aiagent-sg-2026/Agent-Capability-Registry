@@ -1,0 +1,14 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"capability/v0.1",
+  "type":"object","additionalProperties":false,
+  "required":["schema","name","version","description","license","content","permissions","compatibility","provenance","eval"],
+  "properties":{
+    "schema":{"const":"capability/v0.1"},"name":{"type":"string","pattern":"^@[a-z0-9._-]+/[a-z0-9._-]+$"},"version":{"type":"string","pattern":"^\\d+\\.\\d+\\.\\d+$"},"description":{"type":"string","minLength":1},"license":{"type":"string","minLength":1},
+    "content":{"type":"object","additionalProperties":false,"required":["files"],"properties":{"files":{"type":"array","uniqueItems":true,"minItems":1,"items":{"type":"string","minLength":1,"pattern":"^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\)[^\\u0000]+$"}}}},
+    "permissions":{"type":"object","additionalProperties":false,"required":["network","filesystem","database","shell"],"properties":{"network":{"enum":["none","read-only"]},"filesystem":{"enum":["none","workspace-read","read-only"]},"database":{"enum":["none","read-only-no-execution"]},"shell":{"const":"none"}}},
+    "compatibility":{"type":"object","additionalProperties":false,"required":["codex","postgresql"],"properties":{"codex":{"type":"string"},"postgresql":{"type":"array","items":{"type":"string"}}}},
+    "provenance":{"type":"object","additionalProperties":false,"required":["source","author","createdAt"],"properties":{"source":{"type":"string","minLength":1},"author":{"type":"string","minLength":1},"createdAt":{"type":"string","minLength":1}}},
+    "eval":{"type":"object","additionalProperties":false,"required":["contract","cases"],"properties":{"contract":{"type":"string","minLength":1},"cases":{"type":"string","minLength":1,"pattern":"^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\)[^\\u0000]+$"}}}
+  }
+}

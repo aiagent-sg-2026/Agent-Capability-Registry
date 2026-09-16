@@ -1,0 +1,1 @@
+{"name":"@acr/package-runner","version":"0.1.0","main":"dist/index.js","types":"dist/index.d.ts","dependencies":{"@acr/package-schema":"0.1.0"}}

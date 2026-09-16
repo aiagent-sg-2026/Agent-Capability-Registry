@@ -1,0 +1,1 @@
+export interface CatalogEntry{name:string;version:string;path:string;description:string} export class LocalCatalog{constructor(public entries:CatalogEntry[]=[]){} search(q:string){return this.entries.filter(x=>(x.name+x.description).toLowerCase().includes(q.toLowerCase()));} info(name:string){return this.entries.find(x=>x.name===name);}}
