@@ -7,3 +7,5 @@ The bounded Package Factory is the narrow exception for the verified demo contra
 Continuous Factory V1 uses an append-only opportunity queue and persists only data-only `CANDIDATE_ONLY` packages. No production deployment is claimed.
 
 Registry Search must stay local, deterministic, metadata-only, and fail closed on malformed or path-escaping candidate records. Discovery is not trust promotion: `CANDIDATE_ONLY` remains explicit until a separate verified release process exists.
+
+Agent resolution may consume candidate package Markdown/JSON only as bounded context; CANDIDATE_ONLY content must never be executed or installed automatically.
