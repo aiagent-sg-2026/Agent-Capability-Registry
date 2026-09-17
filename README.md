@@ -16,3 +16,15 @@ Configuration uses `ACR_FACTORY_*` environment variables (see [ARCHITECTURE](doc
 For systemd, build this checkout, verify the runtime path with `command -v node` (the template currently requires `/usr/local/bin/node`; edit `ExecStart` if the preflight reports another absolute path), and pre-create the writable state directory as the service user: `install -d -m 700 -o ai-agent -g ai-agent /srv/agent-workstation/state/agent-capability-registry-factory`. Review absolute paths and non-secret environment overrides, then copy/link both files in `ops/systemd/` into `/etc/systemd/system/`, run `systemctl daemon-reload`, and enable the timer with `systemctl enable --now agent-capability-registry-factory.timer`. This project does not install systemd units itself.
 
 Continuous Factory V1 maintains an append-only opportunity queue, performs one bounded discovery refill when exhausted, and materializes only reviewed data-only markdown/JSON packages under state. No production deployment is claimed.
+
+## Local Registry Search
+
+Generated candidate packages are discoverable without executing them:
+
+```sh
+npm run cap -- search "postgres query"
+npm run cap -- search "json" --category json-analysis --limit 10
+npm run cap -- info postgres-query-reviewer
+```
+
+`cap search` and `cap info` read the Factory candidate index and verified `manifest.json` metadata from `ACR_FACTORY_STATE_DIR` (or the default local state directory). Results remain `CANDIDATE_ONLY`; search does not install, execute, or promote trust.

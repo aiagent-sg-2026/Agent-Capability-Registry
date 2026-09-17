@@ -1,1 +1,1 @@
-{"name":"@acr/cli","version":"0.1.0","bin":{"cap":"dist/index.js"},"main":"dist/index.js","dependencies":{"@acr/package-schema":"0.1.0","@acr/package-runner":"0.1.0","@acr/evaluator":"0.1.0"}}
+{"name":"@acr/cli","version":"0.1.0","bin":{"cap":"dist/index.js"},"main":"dist/index.js","dependencies":{"@acr/package-schema":"0.1.0","@acr/package-runner":"0.1.0","@acr/evaluator":"0.1.0","@acr/registry-api":"0.1.0"}}

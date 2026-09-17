@@ -9,3 +9,7 @@ Defaults: `ACR_FACTORY_BASE_URL`, `ACR_FACTORY_ORIGIN`, `ACR_FACTORY_PROJECT_ID`
 `once` performs one real bounded cycle when admitted; `status` prints safe budget/circuit/latest-cycle JSON; `canary` and `dry-run` are offline. JSON is printed for every command. The service and timer templates in `ops/systemd/` are not installed automatically; the timer is every 15 minutes with `Persistent=true`.
 
 The opportunity queue is append-only JSONL under state; historical IDs/titles and candidate index records provide deduplication and consumption. Discovery is capped at eight opportunities and occurs at most once per cycle. Proposal and review calls are admitted independently; usage purposes are `discover`, `proposal`, and `review`. Status reports queued, discovered, and candidate-package counts.
+
+## Registry Search
+
+`@acr/registry-api` exposes a deterministic local catalog over Factory `CANDIDATE_ONLY` records. It accepts only candidate paths contained under the configured state directory's `packages/` tree, rechecks index-to-manifest name/hash/opportunity/time consistency, recomputes the deterministic package hash, skips malformed or mismatched records, and returns metadata only. Search ranking is deterministic: exact/name matches outrank tags, category, then description; all query tokens must match. `cap search` and `cap info` are read-only discovery surfaces and do not promote, install, or execute packages.
