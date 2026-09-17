@@ -7,6 +7,8 @@ npm install && npm run build && npm test
 npm run cap -- validate examples/postgresql-query-reviewer
 npm run cap -- verify examples/postgresql-query-reviewer
 npm run cap -- install examples/postgresql-query-reviewer --target /tmp/cap-target
+npm run cap -- resolve "postgres query"
+npm run cap -- use "postgres query" --max-bytes 32768
 ```
 
 V1 uses deterministic heuristics and file-backed APIs. The additive Package Factory is bounded and candidate-only: `npm run factory -- status`, `npm run factory -- once`, or `npm run factory -- canary`. It never installs, publishes, edits this repository, runs generated commands, fetches package code, or executes candidate content.
@@ -28,3 +30,5 @@ npm run cap -- info postgres-query-reviewer
 ```
 
 `cap search` and `cap info` read the Factory candidate index and verified `manifest.json` metadata from `ACR_FACTORY_STATE_DIR` (or the default local state directory). Results remain `CANDIDATE_ONLY`; search does not install, execute, or promote trust.
+
+Agent Resolution V1 chains Registry Search → exact info lookup → deterministic selection → a bounded context-only use bundle. Candidate content is never executed or installed by `cap use`.

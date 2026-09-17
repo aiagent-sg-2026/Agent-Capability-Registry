@@ -91,3 +91,51 @@ export class LocalCatalog{
   }
 }
 export function createFactoryCatalog(stateDir?:string){return new LocalCatalog(loadFactoryCatalog(stateDir))}
+
+export interface ResolutionStage { stage:'search'|'info'|'select'; status:'PASS'|'NO_MATCH'; count?:number }
+export interface CapabilityResolution {
+  query:string; stages:ResolutionStage[]; candidates:CatalogEntry[]; selected:CatalogEntry|null;
+  selection:{strategy:'deterministic-search-rank'; reason:string}|null;
+}
+export interface UseOptions extends SearchOptions { maxBytes?:number }
+export interface ContextFile { path:string; content:string; bytes:number; truncated:boolean }
+export interface CapabilityContextBundle {
+  mode:'context-only'; executable:false; status:'CANDIDATE_ONLY'; query:string; selected:CatalogEntry;
+  stages:ResolutionStage[]; alternatives:CatalogEntry[]; files:ContextFile[]; totalBytes:number; maxBytes:number; truncated:boolean;
+}
+
+export function resolveCapability(catalog:LocalCatalog,query:string,options:SearchOptions={}):CapabilityResolution {
+  const limit=options.limit??5;
+  const candidates=catalog.search(query,{...options,limit});
+  const stages:ResolutionStage[]=[{stage:'search',status:candidates.length?'PASS':'NO_MATCH',count:candidates.length}];
+  if(!candidates.length)return{query,stages,candidates,selected:null,selection:null};
+  const top=candidates[0],info=catalog.info(top.name,top.version);
+  stages.push({stage:'info',status:info?'PASS':'NO_MATCH'});
+  if(!info){stages.push({stage:'select',status:'NO_MATCH'});return{query,stages,candidates,selected:null,selection:null}}
+  stages.push({stage:'select',status:'PASS'});
+  return{query,stages,candidates,selected:info,selection:{strategy:'deterministic-search-rank',reason:'highest ranked candidate after exact metadata lookup'}};
+}
+
+function readContextPackage(entry:CatalogEntry):JsonObject {
+  let root:string;try{root=realpathSync(entry.path)}catch{throw new Error('selected package path is unavailable')}
+  const manifestPath=join(root,'manifest.json');let st;try{st=lstatSync(manifestPath)}catch{throw new Error('selected package manifest is unavailable')}
+  if(!st.isFile()||st.isSymbolicLink())throw new Error('selected package manifest is invalid');
+  let wrapper:unknown;try{wrapper=JSON.parse(readFileSync(manifestPath,'utf8'))}catch{throw new Error('selected package manifest is invalid JSON')}
+  if(!plain(wrapper)||!allowed(wrapper,['schema','status','opportunityId','packageHash','createdAt','package'])||wrapper.schema!==CANDIDATE_SCHEMA||wrapper.status!=='CANDIDATE_ONLY'||!validPackage(wrapper.package))throw new Error('selected package manifest failed validation');
+  const pkg=wrapper.package as JsonObject;
+  if(wrapper.packageHash!==entry.packageHash||wrapper.opportunityId!==entry.opportunityId||wrapper.createdAt!==entry.createdAt||pkg.name!==entry.name||pkg.version!==entry.version||hashPackage(pkg)!==entry.packageHash)throw new Error('selected package no longer matches registry evidence');
+  return pkg;
+}
+function prefixUtf8(textValue:string,maxBytes:number){let out='',used=0;for(const ch of textValue){const n=Buffer.byteLength(ch);if(used+n>maxBytes)break;out+=ch;used+=n}return{content:out,bytes:used,truncated:used<Buffer.byteLength(textValue)}}
+
+export function buildContextBundle(resolution:CapabilityResolution,options:UseOptions={}):CapabilityContextBundle|null {
+  if(!resolution.selected)return null;
+  const maxBytes=options.maxBytes??32768;if(!Number.isInteger(maxBytes)||maxBytes<1024||maxBytes>65536)throw new Error('maxBytes must be an integer from 1024 to 65536');
+  const pkg=readContextPackage(resolution.selected),rawFiles=pkg.files;if(!Array.isArray(rawFiles))throw new Error('selected package files are invalid');
+  const ordered=[...rawFiles].sort((a:any,b:any)=>a.path==='README.md'?-1:b.path==='README.md'?1:compareText(a.path,b.path));
+  const files:ContextFile[]=[];let remaining=maxBytes,totalBytes=0,truncated=false;
+  for(const f of ordered as any[]){if(remaining<=0){truncated=true;break}const piece=prefixUtf8(f.content,remaining);files.push({path:f.path,content:piece.content,bytes:piece.bytes,truncated:piece.truncated});remaining-=piece.bytes;totalBytes+=piece.bytes;if(piece.truncated){truncated=true;break}}
+  if(files.length<ordered.length)truncated=true;
+  return{mode:'context-only',executable:false,status:'CANDIDATE_ONLY',query:resolution.query,selected:resolution.selected,stages:resolution.stages,alternatives:resolution.candidates.slice(1),files,totalBytes,maxBytes,truncated};
+}
+export function resolveAndBuildContext(catalog:LocalCatalog,query:string,options:UseOptions={}):CapabilityContextBundle|null{return buildContextBundle(resolveCapability(catalog,query,options),options)}

@@ -8,3 +8,5 @@
 - Continuous Package Factory V1 implemented in this clone: append-only bounded opportunity refill, per-purpose usage admission, strict package validation, deterministic materialization, candidate indexing, and safe status counts. No production deployment is claimed.
 - Continuous Factory verification covers legacy `seedId` consumption, terminal queue outcomes, discovery refill/deduplication, strict candidate packages, atomic materialization, duplicate hashes, review/budget gates, and an offline multi-cycle simulation. No network calls, installation, publishing, generated execution, commit, or push were performed.
 - Registry Search V1 adds read-only Factory candidate indexing plus deterministic `cap search` and exact `cap info`; malformed, mismatched, duplicate, non-candidate, missing, and path-escaping records are skipped fail-closed. Search returns metadata/path only and does not execute or install candidate content.
+
+- Agent Resolution V1 adds deterministic `cap resolve` and bounded context-only `cap use`, completing search → info → select → use without executing or installing candidate content.
