@@ -1,25 +1,25 @@
 {
   "schemaVersion": "acr/dashboard/v1",
-  "generatedAt": "2026-09-18T23:26:20.920Z",
+  "generatedAt": "2026-09-18T23:32:49.657Z",
   "project": {
     "name": "Agent Capability Registry",
     "repository": "aiagent-sg-2026/Agent-Capability-Registry",
     "pagesPath": "/Agent-Capability-Registry/"
   },
   "summary": {
-    "candidatePackageCount": 24,
-    "opportunityCount": 25,
+    "candidatePackageCount": 25,
+    "opportunityCount": 26,
     "queuedOpportunities": 0,
-    "consumedOpportunities": 25,
-    "generationAttempts": 41,
-    "candidateSaved": 24,
-    "successRate": 58.5,
+    "consumedOpportunities": 26,
+    "generationAttempts": 42,
+    "candidateSaved": 25,
+    "successRate": 59.5,
     "retryAttempts": 16,
-    "modelCalls": 48,
-    "tokensToday": 44300,
+    "modelCalls": 51,
+    "tokensToday": 46858,
     "dailyTokenBudget": 1000000,
-    "remainingTokens": 955700,
-    "averageTokensPerCall": 922.9
+    "remainingTokens": 953142,
+    "averageTokensPerCall": 918.8
   },
   "costLedger": {
     "day": "2026-09-19",
@@ -28,41 +28,41 @@
     "outputUsdPer1M": null,
     "estimatedUsdToday": null,
     "today": {
-      "promptTokens": 21626,
-      "completionTokens": 22674,
-      "totalTokens": 44300,
-      "calls": 48
+      "promptTokens": 22925,
+      "completionTokens": 23933,
+      "totalTokens": 46858,
+      "calls": 51
     },
     "byPurpose": [
       {
         "name": "proposal",
-        "promptTokens": 9280,
-        "completionTokens": 17157,
-        "totalTokens": 26437,
-        "calls": 24
+        "promptTokens": 9728,
+        "completionTokens": 17781,
+        "totalTokens": 27509,
+        "calls": 25
       },
       {
         "name": "review",
-        "promptTokens": 11554,
-        "completionTokens": 1480,
-        "totalTokens": 13034,
-        "calls": 15
+        "promptTokens": 12317,
+        "completionTokens": 1612,
+        "totalTokens": 13929,
+        "calls": 16
       },
       {
         "name": "discover",
-        "promptTokens": 792,
-        "completionTokens": 4037,
-        "totalTokens": 4829,
-        "calls": 9
+        "promptTokens": 880,
+        "completionTokens": 4540,
+        "totalTokens": 5420,
+        "calls": 10
       }
     ],
     "byModel": [
       {
         "name": "demo-auto",
-        "promptTokens": 21626,
-        "completionTokens": 22674,
-        "totalTokens": 44300,
-        "calls": 48
+        "promptTokens": 22925,
+        "completionTokens": 23933,
+        "totalTokens": 46858,
+        "calls": 51
       }
     ],
     "daily": [
@@ -82,16 +82,16 @@
       },
       {
         "day": "2026-09-19",
-        "promptTokens": 21626,
-        "completionTokens": 22674,
-        "totalTokens": 44300,
-        "calls": 48
+        "promptTokens": 22925,
+        "completionTokens": 23933,
+        "totalTokens": 46858,
+        "calls": 51
       }
     ]
   },
   "execution": {
     "outcomeCounts": {
-      "candidate_saved": 24,
+      "candidate_saved": 25,
       "no_seed": 173,
       "malformed_json": 6,
       "unsafe_candidate": 11,
@@ -100,6 +100,14 @@
     },
     "retryAttempts": 16,
     "recentCycles": [
+      {
+        "timestamp": "2026-09-18T23:30:23.612Z",
+        "opportunityId": "opp-5",
+        "outcome": "candidate_saved",
+        "reason": "",
+        "usedTokens": 46858,
+        "remainingTokens": 953142
+      },
       {
         "timestamp": "2026-09-18T23:15:19.352Z",
         "opportunityId": "",
@@ -411,14 +419,6 @@
         "reason": "",
         "usedTokens": 9110,
         "remainingTokens": 990890
-      },
-      {
-        "timestamp": "2026-09-18T15:46:54.915Z",
-        "opportunityId": "erp-data-lineage-tracer",
-        "outcome": "unsafe_candidate",
-        "reason": "",
-        "usedTokens": 7932,
-        "remainingTokens": 992068
       }
     ]
   },
@@ -574,6 +574,22 @@
       "status": "CANDIDATE_ONLY",
       "createdAt": "2026-09-18T23:00:34.094Z",
       "hashPrefix": "74e7226ba038"
+    },
+    {
+      "name": "markdown-formatting-and-link-integrity-review",
+      "version": "0.1.0",
+      "description": "Read-only review package for markdown structure, heading hierarchy, list formatting, and internal link integrity with concrete correction notes.",
+      "category": "markdown-quality",
+      "tags": [
+        "markdown",
+        "headings",
+        "links",
+        "documentation",
+        "linting"
+      ],
+      "status": "CANDIDATE_ONLY",
+      "createdAt": "2026-09-18T23:30:23.612Z",
+      "hashPrefix": "6b2c2d6ecc4b"
     },
     {
       "name": "markdown-heading-structure-audit",
