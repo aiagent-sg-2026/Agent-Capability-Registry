@@ -21,7 +21,7 @@ export function validateCandidatePackage(x:unknown):x is CandidatePackage {
 }
 export function evaluateCandidateQuality(pkg:CandidatePackage):CandidateQualityResult {
  const reasons:string[]=[];const readme=pkg.files.find(f=>f.path==='README.md')?.content||'';const bytes=Buffer.byteLength(readme);
- if(bytes<1100)reasons.push('readme_too_shallow');if(bytes>6000)reasons.push('readme_too_large');
+ if(bytes<700)reasons.push('readme_too_shallow');if(bytes>2200)reasons.push('readme_too_large');
  for(const h of QUALITY_README_HEADINGS){const i=readme.indexOf(h);if(i<0){reasons.push('missing_'+h.slice(3).toLowerCase().replace(/[^a-z0-9]+/g,'_'));continue}const start=i+h.length,end=QUALITY_README_HEADINGS.map(x=>readme.indexOf(x,start)).filter(x=>x>=0).sort((a,b)=>a-b)[0]??readme.length;if(readme.slice(start,end).trim().length<40)reasons.push('thin_'+h.slice(3).toLowerCase().replace(/[^a-z0-9]+/g,'_'))}
  const evalFile=pkg.files.find(f=>/^evals\/.*\.json$/.test(f.path));let cases:any[]=[];try{cases=evalFile?JSON.parse(evalFile.content):[]}catch{}
  if(cases.length<3)reasons.push('too_few_eval_cases');if(cases.length>8)reasons.push('too_many_eval_cases');
