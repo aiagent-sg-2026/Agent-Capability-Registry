@@ -44,3 +44,17 @@ npm run cap -- agent codex "review the SQL query" --cwd . --dry-run
 ```
 
 The default is read-only. Candidate package content is injected as explicitly untrusted user-reference context, never as a system prompt, and is never executed or installed by the adapter. If no capability matches, the runner is not started. See `docs/AGENT_RUNNER.md`.
+
+## Public Automation Dashboard
+
+The repository includes a static GitHub Pages dashboard under `docs/` so people can understand the full ACR automation loop without access to the VM. It shows a sanitized Cost Ledger, Factory/task outcomes, bounded retries, capability metadata, agent task resolution, trust boundaries, and the one-week automation model.
+
+Refresh the public snapshot from a trusted workstation:
+
+```sh
+npm run dashboard:export
+```
+
+The exporter reads Factory JSONL state and writes only sanitized aggregates/metadata to `docs/data/dashboard.json`. It excludes raw prompts, package contents, full local paths, bearer/session credentials, and other runtime-sensitive data. If `ACR_DASHBOARD_INPUT_USD_PER_1M` and `ACR_DASHBOARD_OUTPUT_USD_PER_1M` are set, the dashboard can show an estimated USD cost; otherwise it intentionally reports token-only accounting because `demo-auto` is a routing alias.
+
+GitHub Pages deployment is automatic on `main` changes to `docs/`. Runtime metric refresh is deliberately separate: the Factory has no Git-push permission, so the snapshot is not real-time unless a separately reviewed safe publisher is added.
