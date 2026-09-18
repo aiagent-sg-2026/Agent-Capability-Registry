@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {mkdtempSync,readFileSync,readdirSync,statSync,writeFileSync} from 'node:fs';
 import {tmpdir} from 'node:os'; import {join} from 'node:path';
-import {DemoGateway,GatewayError,runBoundedCycle,status,validateCandidate,validateCandidatePackage,validateOpportunity,validateReview,acquireLock} from '../packages/factory/dist/index.js';
+import {DemoGateway,GatewayError,runBoundedCycle,status,validateCandidate,validateCandidatePackage,validateOpportunity,validateReview,acquireLock,CURATED_SEEDS,reconcileCuratedSeeds} from '../packages/factory/dist/index.js';
 import {canonicalOpportunityKey} from '../packages/factory/dist/opportunity.js';
 const cfg=(d,e={})=>({baseUrl:'https://gateway.test/demo',origin:'https://origin.test',projectId:'github-pages',model:'demo-auto',dailyTokenBudget:1e6,minRemainingForCall:10000,stateDir:d,...e});
 const response=(s,b)=>new Response(JSON.stringify(b),{status:s,headers:{'content-type':'application/json'}});
@@ -19,6 +19,38 @@ test('offline cycle materializes strict package and records usage',async()=>{con
 test('old metadata-only proposals are unsafe and terminally consumed',async()=>{const d=mkdtempSync(join(tmpdir(),'acr-'));const g={chat:async(_p,p)=>p==='proposal'?{content:'{"name":"old","description":"metadata","permissions":{"network":false,"filesystem":false},"files":["README.md"]}',usage:{total_tokens:1}}:{content:'{}',usage:{total_tokens:1}}};assert.equal((await runBoundedCycle(cfg(d),g,[opportunity('one')])).status,'unsafe_candidate');assert.equal((await runBoundedCycle(cfg(d),g,[opportunity('one')])).status,'discovery_empty');});
 test('review failure is terminal but transient failure retries',async()=>{const d=mkdtempSync(join(tmpdir(),'acr-'));const fail={chat:async(_p,p)=>p==='proposal'?{content:JSON.stringify(pkg()),usage:{total_tokens:1}}:{content:'{"decision":"FAIL","reasons":["no"]}',usage:{total_tokens:1}}};assert.equal((await runBoundedCycle(cfg(d),fail,[opportunity('one')])).status,'review_failed');assert.equal((await runBoundedCycle(cfg(d),fail,[opportunity('one')])).status,'discovery_empty');const d2=mkdtempSync(join(tmpdir(),'acr-'));let n=0;const transient={chat:async()=>{n++;throw new GatewayError('transient_503')}};assert.equal((await runBoundedCycle(cfg(d2,{}),transient,[opportunity('one')])).status,'transient_failure');assert.equal((await runBoundedCycle(cfg(d2,{}),gateway(),[opportunity('one')])).status,'candidate_saved');});
 test('legacy seedId records are consumed and status counts them',async()=>{const d=mkdtempSync(join(tmpdir(),'acr-'));writeFileSync(join(d,'opportunities.jsonl'),[opportunity('a'),opportunity('b'),opportunity('c')].map(JSON.stringify).join('\n')+'\n');writeFileSync(join(d,'candidates.jsonl'),JSON.stringify({seedId:'a',status:'CANDIDATE_ONLY'})+'\n');assert.equal(status(cfg(d)).queuedOpportunities,2);assert.equal((await runBoundedCycle(cfg(d),gateway(),[opportunity('a'),opportunity('b'),opportunity('c')])).opportunityId,'b')});
-test('discovery refills after three seeds and dedupes id slug title within batch/history',async()=>{const d=mkdtempSync(join(tmpdir(),'acr-'));let discoveries=0,proposals=0;const g={chat:async(_p,p)=>{if(p==='discover'){discoveries++;return{content:JSON.stringify({opportunities:[opportunity('same','New title'),{...opportunity('other','New title'),id:'other',slug:'other',source:'discovered'},{...opportunity('third','Third'),source:'discovered'}]}),usage:{total_tokens:1}}}return p==='proposal'?{content:JSON.stringify(pkg('pkg-'+(++proposals))),usage:{total_tokens:1}}:{content:'{"decision":"PASS","reasons":[]}',usage:{total_tokens:1}}}};for(let i=0;i<3;i++)assert.equal((await runBoundedCycle(cfg(d),g)).status,'candidate_saved');assert.equal((await runBoundedCycle(cfg(d),g)).status,'candidate_saved');assert.equal(discoveries,1);assert.equal(status(cfg(d)).totalDiscoveredOpportunities,2);assert.equal((await runBoundedCycle(cfg(d),g)).status,'candidate_saved');assert.equal(readdirSync(join(d,'packages')).length>=2,true)});
+test('discovery refills after three seeds and dedupes id slug title within batch/history',async()=>{const d=mkdtempSync(join(tmpdir(),'acr-'));const seeds=[opportunity('seed-a'),opportunity('seed-b'),opportunity('seed-c')];let discoveries=0,proposals=0;const g={chat:async(_p,p)=>{if(p==='discover'){discoveries++;return{content:JSON.stringify({opportunities:[opportunity('same','New title'),{...opportunity('other','New title'),id:'other',slug:'other',source:'discovered'},{...opportunity('third','Third'),source:'discovered'}]}),usage:{total_tokens:1}}}return p==='proposal'?{content:JSON.stringify(pkg('pkg-'+(++proposals))),usage:{total_tokens:1}}:{content:'{"decision":"PASS","reasons":[]}',usage:{total_tokens:1}}}};for(let i=0;i<3;i++)assert.equal((await runBoundedCycle(cfg(d),g,seeds)).status,'candidate_saved');assert.equal((await runBoundedCycle(cfg(d),g,seeds)).status,'candidate_saved');assert.equal(discoveries,1);assert.equal(status(cfg(d)).totalDiscoveredOpportunities,2);assert.equal((await runBoundedCycle(cfg(d),g,seeds)).status,'candidate_saved');assert.equal(readdirSync(join(d,'packages')).length>=2,true)});
 test('identical package hash returns duplicate without second index record',async()=>{const d=mkdtempSync(join(tmpdir(),'acr-'));const seeds=[opportunity('a'),opportunity('b')];assert.equal((await runBoundedCycle(cfg(d),gateway('same'),seeds)).status,'candidate_saved');assert.equal((await runBoundedCycle(cfg(d),gateway('same'),seeds)).status,'duplicate');assert.equal(readFileSync(join(d,'candidates.jsonl'),'utf8').split('\n').filter(Boolean).length,1)});
 test('budget admission, lock, circuit and materialization permissions',async()=>{const d=mkdtempSync(join(tmpdir(),'acr-'));assert.equal((await runBoundedCycle(cfg(d,{dailyTokenBudget:9999}),gateway(),[opportunity('a')])).status,'budget_exhausted');const release=acquireLock(d);assert.throws(()=>acquireLock(d),/busy/);release();const d2=mkdtempSync(join(tmpdir(),'acr-'));const bad={chat:async()=>{throw new GatewayError('transient_503')}};for(let i=0;i<3;i++)assert.equal((await runBoundedCycle(cfg(d2),bad,[opportunity('a')])).status,'transient_failure');assert.equal((await runBoundedCycle(cfg(d2),bad,[opportunity('a')])).status,'cooldown')});
+
+
+test('high-value curated seeds are unique and valid',()=>{
+  const expected=['erp-read-first-investigator','postgresql-report-query-reviewer','api-contract-reviewer','webhook-delivery-debugger','erp-data-lineage-tracer'];
+  assert.equal(CURATED_SEEDS.length,8);
+  assert.deepEqual(expected.filter(id=>!CURATED_SEEDS.some(x=>x.id===id)),[]);
+  assert.equal(CURATED_SEEDS.every(validateOpportunity),true);
+  assert.equal(new Set(CURATED_SEEDS.map(x=>x.id)).size,CURATED_SEEDS.length);
+  assert.equal(new Set(CURATED_SEEDS.map(x=>x.slug)).size,CURATED_SEEDS.length);
+  assert.equal(new Set(CURATED_SEEDS.map(x=>x.title.trim().toLowerCase())).size,CURATED_SEEDS.length);
+});
+test('curated reconciliation appends missing seeds once to non-empty state',()=>{
+  const d=mkdtempSync(join(tmpdir(),'acr-'));
+  const existing=opportunity('existing');
+  writeFileSync(join(d,'opportunities.jsonl'),JSON.stringify(existing)+'\n');
+  const first=reconcileCuratedSeeds(d,CURATED_SEEDS), second=reconcileCuratedSeeds(d,CURATED_SEEDS);
+  assert.equal(first.length,CURATED_SEEDS.length);
+  assert.equal(second.length,0);
+  const rows=readFileSync(join(d,'opportunities.jsonl'),'utf8').split('\n').filter(Boolean).map(JSON.parse);
+  assert.equal(rows.length,1+CURATED_SEEDS.length);
+  assert.equal(rows[0].id,'existing');
+});
+test('bounded cycle reconciles new curated seeds before discovery',async()=>{
+  const d=mkdtempSync(join(tmpdir(),'acr-'));
+  writeFileSync(join(d,'opportunities.jsonl'),JSON.stringify({...opportunity('old'),source:'curated'})+'\n');
+  writeFileSync(join(d,'cycles.jsonl'),JSON.stringify({opportunityId:'old',outcome:'unsafe_candidate'})+'\n');
+  const g=gateway('new-cap');
+  const r=await runBoundedCycle(cfg(d),g,[opportunity('old'),opportunity('new-curated')]);
+  assert.equal(r.opportunityId,'new-curated');
+  assert.equal(r.status,'candidate_saved');
+  assert.equal(reconcileCuratedSeeds(d,[opportunity('old'),opportunity('new-curated')]).length,0);
+});
