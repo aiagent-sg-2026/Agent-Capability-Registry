@@ -16,3 +16,17 @@ export const opportunityFile = (stateDir:string) => join(stateDir,'opportunities
 export function readOpportunities(stateDir:string):Opportunity[] { const p=opportunityFile(stateDir); if(!existsSync(p)) return []; return readFileSync(p,'utf8').split('\n').filter(Boolean).flatMap(l=>{try{const x=JSON.parse(l);return validateOpportunity(x)?[x]:[]}catch{return []}}); }
 export function appendOpportunities(stateDir:string, opportunities:Opportunity[]):void { const normalized=opportunities.map((x:any)=>x.category?x:{id:x.id,slug:x.id,title:x.title,category:'documentation',problem:x.request,successCriteria:'Produces bounded, deterministic, read-only documentation.',source:'curated',createdAt:'2026-01-01T00:00:00.000Z'}).filter(validateOpportunity); if(normalized.length) appendFileSync(opportunityFile(stateDir),normalized.map(x=>JSON.stringify(x)).join('\n')+'\n',{mode:0o600}); }
 export function canonicalOpportunityKey(o:Pick<Opportunity,'id'|'title'>):string { return o.title.trim().toLowerCase(); }
+export function reconcileCuratedSeeds(stateDir:string, seeds:Opportunity[]):Opportunity[] {
+  const existing = readOpportunities(stateDir);
+  const ids = new Set(existing.map(o => o.id));
+  const slugs = new Set(existing.map(o => o.slug));
+  const titles = new Set(existing.map(canonicalOpportunityKey));
+  const missing:Opportunity[] = [];
+  for (const seed of seeds) {
+    const title = canonicalOpportunityKey(seed);
+    if (!validateOpportunity(seed) || ids.has(seed.id) || slugs.has(seed.slug) || titles.has(title)) continue;
+    missing.push(seed); ids.add(seed.id); slugs.add(seed.slug); titles.add(title);
+  }
+  appendOpportunities(stateDir, missing);
+  return missing;
+}
