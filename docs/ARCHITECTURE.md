@@ -15,3 +15,9 @@ The opportunity queue is append-only JSONL under state; historical IDs/titles an
 `@acr/registry-api` exposes a deterministic local catalog over Factory `CANDIDATE_ONLY` records. It accepts only candidate paths contained under the configured state directory's `packages/` tree, rechecks index-to-manifest name/hash/opportunity/time consistency, recomputes the deterministic package hash, skips malformed or mismatched records, and returns metadata only. Search ranking is deterministic: exact/name matches outrank tags, category, then description; all query tokens must match. `cap search` and `cap info` are read-only discovery surfaces and do not promote, install, or execute packages.
 
 Agent Resolution V1 uses the local Registry Search ranking, confirms the selected exact name/version via `info`, and builds a context-only bundle from the still-matching CANDIDATE_ONLY manifest. Bundles are capped at 32 KiB by default (configurable 1–64 KiB) and never execute or install package content.
+
+## Agent Runner Integration
+
+`@acr/agent-adapter` is the thin runtime bridge from Registry evidence to real local agents. It first tries the full task against Registry Search; when that is too specific, it deterministically retains only task terms that are relevant to catalog entries and resolves again. The original full task is never rewritten for the agent.
+
+After exact metadata lookup, the adapter rebuilds the bounded `CANDIDATE_ONLY` context bundle and composes one user prompt containing an explicit low-trust notice. Capability content is never promoted to system instructions. The adapter launches Codex or Pi with `spawnSync(..., {shell:false})`; read-only is the default, workspace write access must be selected explicitly, and no match means no runner launch.

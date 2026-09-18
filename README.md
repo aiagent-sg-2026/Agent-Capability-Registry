@@ -32,3 +32,15 @@ npm run cap -- info postgres-query-reviewer
 `cap search` and `cap info` read the Factory candidate index and verified `manifest.json` metadata from `ACR_FACTORY_STATE_DIR` (or the default local state directory). Results remain `CANDIDATE_ONLY`; search does not install, execute, or promote trust.
 
 Agent Resolution V1 chains Registry Search → exact info lookup → deterministic selection → a bounded context-only use bundle. Candidate content is never executed or installed by `cap use`.
+
+## Real Agent integration
+
+`cap agent` automatically resolves a task to a validated capability, builds the bounded context-only bundle, and launches a real local Codex or Pi runner. The original task is sent unchanged; only catalog-relevant terms are used for fallback capability selection.
+
+```sh
+npm run cap -- agent codex "review the SQL query in this workspace" --cwd .
+npm run cap -- agent pi "inspect this JSON response" --cwd . --mode read-only
+npm run cap -- agent codex "review the SQL query" --cwd . --dry-run
+```
+
+The default is read-only. Candidate package content is injected as explicitly untrusted user-reference context, never as a system prompt, and is never executed or installed by the adapter. If no capability matches, the runner is not started. See `docs/AGENT_RUNNER.md`.

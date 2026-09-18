@@ -1,1 +1,1 @@
-{"extends":"../../tsconfig.base.json","compilerOptions":{"composite":true,"outDir":"dist","rootDir":"src"},"references":[{"path":"../package-schema"},{"path":"../package-runner"},{"path":"../evaluator"},{"path":"../registry-api"}],"include":["src"]}
+{"extends":"../../tsconfig.base.json","compilerOptions":{"composite":true,"outDir":"dist","rootDir":"src"},"references":[{"path":"../package-schema"},{"path":"../package-runner"},{"path":"../evaluator"},{"path":"../registry-api"},{"path":"../agent-adapter"}],"include":["src"]}
