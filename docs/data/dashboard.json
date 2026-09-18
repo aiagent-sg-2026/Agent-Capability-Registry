@@ -1,0 +1,791 @@
+{
+  "schemaVersion": "acr/dashboard/v1",
+  "generatedAt": "2026-09-18T23:26:20.920Z",
+  "project": {
+    "name": "Agent Capability Registry",
+    "repository": "aiagent-sg-2026/Agent-Capability-Registry",
+    "pagesPath": "/Agent-Capability-Registry/"
+  },
+  "summary": {
+    "candidatePackageCount": 24,
+    "opportunityCount": 25,
+    "queuedOpportunities": 0,
+    "consumedOpportunities": 25,
+    "generationAttempts": 41,
+    "candidateSaved": 24,
+    "successRate": 58.5,
+    "retryAttempts": 16,
+    "modelCalls": 48,
+    "tokensToday": 44300,
+    "dailyTokenBudget": 1000000,
+    "remainingTokens": 955700,
+    "averageTokensPerCall": 922.9
+  },
+  "costLedger": {
+    "day": "2026-09-19",
+    "costStatus": "token-only-model-alias-pricing-unresolved",
+    "inputUsdPer1M": null,
+    "outputUsdPer1M": null,
+    "estimatedUsdToday": null,
+    "today": {
+      "promptTokens": 21626,
+      "completionTokens": 22674,
+      "totalTokens": 44300,
+      "calls": 48
+    },
+    "byPurpose": [
+      {
+        "name": "proposal",
+        "promptTokens": 9280,
+        "completionTokens": 17157,
+        "totalTokens": 26437,
+        "calls": 24
+      },
+      {
+        "name": "review",
+        "promptTokens": 11554,
+        "completionTokens": 1480,
+        "totalTokens": 13034,
+        "calls": 15
+      },
+      {
+        "name": "discover",
+        "promptTokens": 792,
+        "completionTokens": 4037,
+        "totalTokens": 4829,
+        "calls": 9
+      }
+    ],
+    "byModel": [
+      {
+        "name": "demo-auto",
+        "promptTokens": 21626,
+        "completionTokens": 22674,
+        "totalTokens": 44300,
+        "calls": 48
+      }
+    ],
+    "daily": [
+      {
+        "day": "2026-09-17",
+        "promptTokens": 594,
+        "completionTokens": 406,
+        "totalTokens": 1000,
+        "calls": 6
+      },
+      {
+        "day": "2026-09-18",
+        "promptTokens": 10807,
+        "completionTokens": 16777,
+        "totalTokens": 27584,
+        "calls": 22
+      },
+      {
+        "day": "2026-09-19",
+        "promptTokens": 21626,
+        "completionTokens": 22674,
+        "totalTokens": 44300,
+        "calls": 48
+      }
+    ]
+  },
+  "execution": {
+    "outcomeCounts": {
+      "candidate_saved": 24,
+      "no_seed": 173,
+      "malformed_json": 6,
+      "unsafe_candidate": 11,
+      "transient_failure": 1,
+      "discovery_empty": 5
+    },
+    "retryAttempts": 16,
+    "recentCycles": [
+      {
+        "timestamp": "2026-09-18T23:15:19.352Z",
+        "opportunityId": "",
+        "outcome": "discovery_empty",
+        "reason": "no valid new opportunity",
+        "usedTokens": 44300,
+        "remainingTokens": 955700
+      },
+      {
+        "timestamp": "2026-09-18T23:00:34.094Z",
+        "opportunityId": "opportunity-4",
+        "outcome": "candidate_saved",
+        "reason": "",
+        "usedTokens": 43662,
+        "remainingTokens": 956338
+      },
+      {
+        "timestamp": "2026-09-18T22:45:14.678Z",
+        "opportunityId": "opportunity-4",
+        "outcome": "unsafe_candidate",
+        "reason": "",
+        "usedTokens": 41853,
+        "remainingTokens": 958147
+      },
+      {
+        "timestamp": "2026-09-18T22:30:02.365Z",
+        "opportunityId": "opportunity-4",
+        "outcome": "unsafe_candidate",
+        "reason": "",
+        "usedTokens": 40861,
+        "remainingTokens": 959139
+      },
+      {
+        "timestamp": "2026-09-18T22:15:29.362Z",
+        "opportunityId": "opportunity-3",
+        "outcome": "candidate_saved",
+        "reason": "",
+        "usedTokens": 39887,
+        "remainingTokens": 960113
+      },
+      {
+        "timestamp": "2026-09-18T22:00:20.383Z",
+        "opportunityId": "opportunity-2",
+        "outcome": "candidate_saved",
+        "reason": "",
+        "usedTokens": 37627,
+        "remainingTokens": 962373
+      },
+      {
+        "timestamp": "2026-09-18T21:45:29.356Z",
+        "opportunityId": "opportunity-2",
+        "outcome": "malformed_json",
+        "reason": "",
+        "usedTokens": 35628,
+        "remainingTokens": 964372
+      },
+      {
+        "timestamp": "2026-09-18T21:30:02.904Z",
+        "opportunityId": "opportunity-2",
+        "outcome": "malformed_json",
+        "reason": "",
+        "usedTokens": 34398,
+        "remainingTokens": 965602
+      },
+      {
+        "timestamp": "2026-09-18T21:15:29.343Z",
+        "opportunityId": "opportunity-1",
+        "outcome": "candidate_saved",
+        "reason": "",
+        "usedTokens": 33143,
+        "remainingTokens": 966857
+      },
+      {
+        "timestamp": "2026-09-18T21:00:34.196Z",
+        "opportunityId": "",
+        "outcome": "discovery_empty",
+        "reason": "no valid new opportunity",
+        "usedTokens": 30830,
+        "remainingTokens": 969170
+      },
+      {
+        "timestamp": "2026-09-18T20:45:29.345Z",
+        "opportunityId": "",
+        "outcome": "discovery_empty",
+        "reason": "no valid new opportunity",
+        "usedTokens": 30293,
+        "remainingTokens": 969707
+      },
+      {
+        "timestamp": "2026-09-18T20:30:24.607Z",
+        "opportunityId": "",
+        "outcome": "discovery_empty",
+        "reason": "no valid new opportunity",
+        "usedTokens": 29802,
+        "remainingTokens": 970198
+      },
+      {
+        "timestamp": "2026-09-18T20:15:22.734Z",
+        "opportunityId": "",
+        "outcome": "discovery_empty",
+        "reason": "no valid new opportunity",
+        "usedTokens": 29287,
+        "remainingTokens": 970713
+      },
+      {
+        "timestamp": "2026-09-18T20:00:19.473Z",
+        "opportunityId": "op-4",
+        "outcome": "candidate_saved",
+        "reason": "",
+        "usedTokens": 28787,
+        "remainingTokens": 971213
+      },
+      {
+        "timestamp": "2026-09-18T19:45:29.384Z",
+        "opportunityId": "op-4",
+        "outcome": "unsafe_candidate",
+        "reason": "",
+        "usedTokens": 26682,
+        "remainingTokens": 973318
+      },
+      {
+        "timestamp": "2026-09-18T19:30:16.845Z",
+        "opportunityId": "op-3",
+        "outcome": "candidate_saved",
+        "reason": "",
+        "usedTokens": 25522,
+        "remainingTokens": 974478
+      },
+      {
+        "timestamp": "2026-09-18T19:15:29.345Z",
+        "opportunityId": "op-2",
+        "outcome": "candidate_saved",
+        "reason": "",
+        "usedTokens": 23988,
+        "remainingTokens": 976012
+      },
+      {
+        "timestamp": "2026-09-18T19:00:26.967Z",
+        "opportunityId": "op-1",
+        "outcome": "candidate_saved",
+        "reason": "",
+        "usedTokens": 22042,
+        "remainingTokens": 977958
+      },
+      {
+        "timestamp": "2026-09-18T18:45:21.346Z",
+        "opportunityId": "op5",
+        "outcome": "unsafe_candidate",
+        "reason": "",
+        "usedTokens": 19427,
+        "remainingTokens": 980573
+      },
+      {
+        "timestamp": "2026-09-18T18:30:29.375Z",
+        "opportunityId": "op5",
+        "outcome": "unsafe_candidate",
+        "reason": "",
+        "usedTokens": 18210,
+        "remainingTokens": 981790
+      },
+      {
+        "timestamp": "2026-09-18T18:15:29.350Z",
+        "opportunityId": "op5",
+        "outcome": "unsafe_candidate",
+        "reason": "",
+        "usedTokens": 17109,
+        "remainingTokens": 982891
+      },
+      {
+        "timestamp": "2026-09-18T18:00:21.847Z",
+        "opportunityId": "op4",
+        "outcome": "candidate_saved",
+        "reason": "",
+        "usedTokens": 15432,
+        "remainingTokens": 984568
+      },
+      {
+        "timestamp": "2026-09-18T17:45:08.138Z",
+        "opportunityId": "",
+        "outcome": "transient_failure",
+        "reason": "transient_504",
+        "usedTokens": 13468,
+        "remainingTokens": 986532
+      },
+      {
+        "timestamp": "2026-09-18T17:30:28.482Z",
+        "opportunityId": "op3",
+        "outcome": "candidate_saved",
+        "reason": "",
+        "usedTokens": 13468,
+        "remainingTokens": 986532
+      },
+      {
+        "timestamp": "2026-09-18T17:15:24.538Z",
+        "opportunityId": "op2",
+        "outcome": "candidate_saved",
+        "reason": "",
+        "usedTokens": 11699,
+        "remainingTokens": 988301
+      },
+      {
+        "timestamp": "2026-09-18T17:00:09.348Z",
+        "opportunityId": "op1",
+        "outcome": "candidate_saved",
+        "reason": "",
+        "usedTokens": 9278,
+        "remainingTokens": 990722
+      },
+      {
+        "timestamp": "2026-09-18T16:45:23.396Z",
+        "opportunityId": "opp-4",
+        "outcome": "candidate_saved",
+        "reason": "",
+        "usedTokens": 6766,
+        "remainingTokens": 993234
+      },
+      {
+        "timestamp": "2026-09-18T16:30:13.890Z",
+        "opportunityId": "opp-3",
+        "outcome": "candidate_saved",
+        "reason": "",
+        "usedTokens": 4882,
+        "remainingTokens": 995118
+      },
+      {
+        "timestamp": "2026-09-18T16:15:09.360Z",
+        "opportunityId": "opp-3",
+        "outcome": "unsafe_candidate",
+        "reason": "",
+        "usedTokens": 3039,
+        "remainingTokens": 996961
+      },
+      {
+        "timestamp": "2026-09-18T16:00:45.106Z",
+        "opportunityId": "opp-2",
+        "outcome": "candidate_saved",
+        "reason": "",
+        "usedTokens": 1918,
+        "remainingTokens": 998082
+      },
+      {
+        "timestamp": "2026-09-18T15:54:27.438Z",
+        "opportunityId": "opp-1",
+        "outcome": "candidate_saved",
+        "reason": "",
+        "usedTokens": 26569,
+        "remainingTokens": 973431
+      },
+      {
+        "timestamp": "2026-09-18T15:54:18.277Z",
+        "opportunityId": "erp-data-lineage-tracer",
+        "outcome": "candidate_saved",
+        "reason": "",
+        "usedTokens": 24986,
+        "remainingTokens": 975014
+      },
+      {
+        "timestamp": "2026-09-18T15:54:10.551Z",
+        "opportunityId": "webhook-delivery-debugger",
+        "outcome": "candidate_saved",
+        "reason": "",
+        "usedTokens": 22695,
+        "remainingTokens": 977305
+      },
+      {
+        "timestamp": "2026-09-18T15:54:03.374Z",
+        "opportunityId": "webhook-delivery-debugger",
+        "outcome": "malformed_json",
+        "reason": "",
+        "usedTokens": 20487,
+        "remainingTokens": 979513
+      },
+      {
+        "timestamp": "2026-09-18T15:53:53.381Z",
+        "opportunityId": "api-contract-reviewer",
+        "outcome": "candidate_saved",
+        "reason": "",
+        "usedTokens": 19113,
+        "remainingTokens": 980887
+      },
+      {
+        "timestamp": "2026-09-18T15:53:42.554Z",
+        "opportunityId": "api-contract-reviewer",
+        "outcome": "unsafe_candidate",
+        "reason": "",
+        "usedTokens": 16270,
+        "remainingTokens": 983730
+      },
+      {
+        "timestamp": "2026-09-18T15:53:29.673Z",
+        "opportunityId": "postgresql-report-query-reviewer",
+        "outcome": "candidate_saved",
+        "reason": "",
+        "usedTokens": 14295,
+        "remainingTokens": 985705
+      },
+      {
+        "timestamp": "2026-09-18T15:53:21.242Z",
+        "opportunityId": "erp-read-first-investigator",
+        "outcome": "candidate_saved",
+        "reason": "",
+        "usedTokens": 11240,
+        "remainingTokens": 988760
+      },
+      {
+        "timestamp": "2026-09-18T15:47:03.900Z",
+        "opportunityId": "opp-1",
+        "outcome": "unsafe_candidate",
+        "reason": "",
+        "usedTokens": 9110,
+        "remainingTokens": 990890
+      },
+      {
+        "timestamp": "2026-09-18T15:46:54.915Z",
+        "opportunityId": "erp-data-lineage-tracer",
+        "outcome": "unsafe_candidate",
+        "reason": "",
+        "usedTokens": 7932,
+        "remainingTokens": 992068
+      }
+    ]
+  },
+  "capabilities": [
+    {
+      "name": "ambiguity-and-terminology-normalization",
+      "version": "0.1.0",
+      "description": "A concise package for identifying ambiguous or inconsistent terminology and proposing normalized wording or a glossary that preserves meaning.",
+      "category": "markdown-quality",
+      "tags": [
+        "terminology",
+        "glossary",
+        "consistency",
+        "clarity"
+      ],
+      "status": "CANDIDATE_ONLY",
+      "createdAt": "2026-09-18T16:45:23.396Z",
+      "hashPrefix": "7c7dec4e2db8"
+    },
+    {
+      "name": "api-contract-reviewer",
+      "version": "0.1.0",
+      "description": "Concise review package for REST/API request-response contracts, focusing on methods, status codes, schemas, idempotency, pagination, error semantics, and versioning risks without network access.",
+      "category": "api-design-review",
+      "tags": [
+        "api-contract",
+        "rest",
+        "schema-review",
+        "status-codes",
+        "idempotency",
+        "pagination",
+        "errors",
+        "versioning"
+      ],
+      "status": "CANDIDATE_ONLY",
+      "createdAt": "2026-09-18T15:53:53.381Z",
+      "hashPrefix": "22ae3cd26bd6"
+    },
+    {
+      "name": "api-schema-field-consistency-review",
+      "version": "0.1.0",
+      "description": "Concise review package for identifying API schema field naming, optionality, and type inconsistencies between documented examples and declared contracts.",
+      "category": "api-design-review",
+      "tags": [
+        "api-schema",
+        "field-consistency",
+        "contract-review",
+        "json-schema"
+      ],
+      "status": "CANDIDATE_ONLY",
+      "createdAt": "2026-09-18T19:15:29.345Z",
+      "hashPrefix": "e5f8b2dc5ee9"
+    },
+    {
+      "name": "document-source-provenance-requirements",
+      "version": "0.1.0",
+      "description": "Bounded documentation package for defining how discovered source values are identified, formatted, and validated for opportunities.",
+      "category": "documentation",
+      "tags": [
+        "provenance",
+        "source",
+        "documentation",
+        "validation"
+      ],
+      "status": "CANDIDATE_ONLY",
+      "createdAt": "2026-09-18T17:30:28.482Z",
+      "hashPrefix": "8b9e1d467762"
+    },
+    {
+      "name": "enumeration-and-allowed-values-validation",
+      "version": "0.1.0",
+      "description": "Concise reference package for validating enumerated fields and allowed values against documented usage, with cases for supported and unsupported values.",
+      "category": "json-analysis",
+      "tags": [
+        "enumeration",
+        "allowed-values",
+        "validation",
+        "documentation",
+        "examples"
+      ],
+      "status": "CANDIDATE_ONLY",
+      "createdAt": "2026-09-18T16:30:13.890Z",
+      "hashPrefix": "834e4d468b05"
+    },
+    {
+      "name": "erp-data-lineage-tracer",
+      "version": "0.1.0",
+      "description": "Concise reference package for tracing ERP document and data lineage from schema or query snippets using explicit keys and evidence, with uncertainty and fanout warnings, without executing queries.",
+      "category": "erp-analysis",
+      "tags": [
+        "data-lineage",
+        "erp",
+        "schema-analysis",
+        "join-tracing",
+        "cardinality"
+      ],
+      "status": "CANDIDATE_ONLY",
+      "createdAt": "2026-09-18T15:54:18.277Z",
+      "hashPrefix": "2747e6773e49"
+    },
+    {
+      "name": "erp-read-first-investigator",
+      "version": "0.1.0",
+      "description": "Concise read-first ERP investigation package focused on evidence labeling, module/table/document-flow hypotheses, unknowns, and ordered read-only checks before any mutation.",
+      "category": "erp-analysis",
+      "tags": [
+        "erp",
+        "investigation",
+        "read-only",
+        "evidence",
+        "document-flow"
+      ],
+      "status": "CANDIDATE_ONLY",
+      "createdAt": "2026-09-18T15:53:21.242Z",
+      "hashPrefix": "4bff996b0232"
+    },
+    {
+      "name": "http-json-inspector",
+      "version": "0.1.0",
+      "description": "",
+      "category": "",
+      "tags": [],
+      "status": "CANDIDATE_ONLY",
+      "createdAt": "2026-09-16T20:00:15.215Z",
+      "hashPrefix": ""
+    },
+    {
+      "name": "json-example-validation-audit",
+      "version": "0.1.0",
+      "description": "Checklist and test cases for validating JSON examples against documented structure, syntax, and required properties.",
+      "category": "json-analysis",
+      "tags": [
+        "json",
+        "validation",
+        "documentation",
+        "audit"
+      ],
+      "status": "CANDIDATE_ONLY",
+      "createdAt": "2026-09-18T19:30:16.845Z",
+      "hashPrefix": "632bc4c7e88d"
+    },
+    {
+      "name": "json-payload-validation-review",
+      "version": "0.1.0",
+      "description": "Concise reference package for validating JSON payload structure, required and optional fields, nested object consistency, and edge-case handling for ambiguous dates and numbers.",
+      "category": "json-analysis",
+      "tags": [
+        "json-validation",
+        "schema-review",
+        "edge-cases",
+        "payload-checks"
+      ],
+      "status": "CANDIDATE_ONLY",
+      "createdAt": "2026-09-18T23:00:34.094Z",
+      "hashPrefix": "74e7226ba038"
+    },
+    {
+      "name": "markdown-heading-structure-audit",
+      "version": "0.1.0",
+      "description": "Bounded reference package for auditing markdown heading hierarchy, duplicates, and skipped levels while preserving meaning.",
+      "category": "markdown-quality",
+      "tags": [
+        "markdown",
+        "headings",
+        "lint",
+        "documentation"
+      ],
+      "status": "CANDIDATE_ONLY",
+      "createdAt": "2026-09-18T19:00:26.967Z",
+      "hashPrefix": "039ea35b4937"
+    },
+    {
+      "name": "markdown-link-checker",
+      "version": "0.1.0",
+      "description": "",
+      "category": "",
+      "tags": [],
+      "status": "CANDIDATE_ONLY",
+      "createdAt": "2026-09-16T20:15:14.285Z",
+      "hashPrefix": ""
+    },
+    {
+      "name": "missing-data-contract-docs",
+      "version": "0.1.0",
+      "description": "Concise reference package for documenting dataset and API payload field definitions, constraints, ownership, and review checklists to reduce downstream ambiguity and integration errors.",
+      "category": "documentation",
+      "tags": [
+        "data-contracts",
+        "documentation",
+        "schema",
+        "ownership",
+        "validation"
+      ],
+      "status": "CANDIDATE_ONLY",
+      "createdAt": "2026-09-18T21:15:29.343Z",
+      "hashPrefix": "d43d9296ac4a"
+    },
+    {
+      "name": "missing-schema-and-field-definitions",
+      "version": "0.1.0",
+      "description": "Concise documentation package defining the missing schema and field dictionary needed to validate and safely reuse the available data.",
+      "category": "documentation",
+      "tags": [
+        "schema",
+        "field-dictionary",
+        "documentation",
+        "validation"
+      ],
+      "status": "CANDIDATE_ONLY",
+      "createdAt": "2026-09-18T17:00:09.348Z",
+      "hashPrefix": "d5bbad9b6e94"
+    },
+    {
+      "name": "postgresql-query-reviewer",
+      "version": "0.1.0",
+      "description": "",
+      "category": "",
+      "tags": [],
+      "status": "CANDIDATE_ONLY",
+      "createdAt": "2026-09-16T19:46:09.414Z",
+      "hashPrefix": ""
+    },
+    {
+      "name": "postgresql-report-query-reviewer",
+      "version": "0.1.0",
+      "description": "Concise reviewer package for analyzing PostgreSQL reporting/listing SQL for join cardinality, duplicate risk, grouping and DISTINCT misuse, filter correctness, indexing, pagination, and large-result behavior without execution.",
+      "category": "sql-analysis",
+      "tags": [
+        "postgresql",
+        "sql-review",
+        "reporting",
+        "query-analysis"
+      ],
+      "status": "CANDIDATE_ONLY",
+      "createdAt": "2026-09-18T15:53:29.673Z",
+      "hashPrefix": "f7588f715ba1"
+    },
+    {
+      "name": "required-vs-optional-clarity-review",
+      "version": "0.1.0",
+      "description": "Concise review package for clarifying required, optional, and conditionally required field documentation.",
+      "category": "documentation",
+      "tags": [
+        "documentation",
+        "requirements",
+        "field-clarity",
+        "validation"
+      ],
+      "status": "CANDIDATE_ONLY",
+      "createdAt": "2026-09-18T16:00:45.106Z",
+      "hashPrefix": "24da8eb0c4b4"
+    },
+    {
+      "name": "review-criteria-read-only-opportunities",
+      "version": "0.1.0",
+      "description": "Concise reference package defining review criteria for read-only, data, and documentation opportunities.",
+      "category": "documentation",
+      "tags": [
+        "review-criteria",
+        "read-only",
+        "data",
+        "documentation",
+        "rubric"
+      ],
+      "status": "CANDIDATE_ONLY",
+      "createdAt": "2026-09-18T18:00:21.847Z",
+      "hashPrefix": "ca035431f64d"
+    },
+    {
+      "name": "schema-consistency-checks",
+      "version": "0.1.0",
+      "description": "Checklist and evaluation cases for reviewing schema consistency across related tables or payloads, focusing on naming, types, and optionality mismatches.",
+      "category": "data-quality",
+      "tags": [
+        "schema",
+        "consistency",
+        "data-quality",
+        "validation"
+      ],
+      "status": "CANDIDATE_ONLY",
+      "createdAt": "2026-09-18T22:00:20.383Z",
+      "hashPrefix": "ff64c076e706"
+    },
+    {
+      "name": "schema-field-type-consistency-audit",
+      "version": "0.1.0",
+      "description": "Concise reference package for auditing schema field type consistency across declared types, examples, and implied usage.",
+      "category": "data-quality",
+      "tags": [
+        "schema-audit",
+        "field-types",
+        "data-consistency"
+      ],
+      "status": "CANDIDATE_ONLY",
+      "createdAt": "2026-09-18T15:54:27.438Z",
+      "hashPrefix": "cae91c4b2c84"
+    },
+    {
+      "name": "sql-join-filter-audit",
+      "version": "0.1.0",
+      "description": "Concise review package for auditing SQL join cardinality, grain, and filter correctness in read-only analytical queries.",
+      "category": "sql-analysis",
+      "tags": [
+        "sql",
+        "joins",
+        "filters",
+        "cardinality",
+        "validation"
+      ],
+      "status": "CANDIDATE_ONLY",
+      "createdAt": "2026-09-18T22:15:29.362Z",
+      "hashPrefix": "b6a3590c2a94"
+    },
+    {
+      "name": "strict-json-output-contract",
+      "version": "0.1.0",
+      "description": "Concise package defining and checking the strict JSON output contract for opportunity items, including required fields, types, optionality, and validation expectations.",
+      "category": "json-analysis",
+      "tags": [
+        "json-contract",
+        "validation",
+        "schema",
+        "output-rules"
+      ],
+      "status": "CANDIDATE_ONLY",
+      "createdAt": "2026-09-18T17:15:24.538Z",
+      "hashPrefix": "4341bbecbf85"
+    },
+    {
+      "name": "test-coverage-documentation-gap-review",
+      "version": "0.1.0",
+      "description": "Concise reference package for identifying and documenting gaps in test coverage descriptions, including what is covered, excluded, and how outcomes should be interpreted.",
+      "category": "testing",
+      "tags": [
+        "documentation",
+        "test-coverage",
+        "clarity",
+        "verification"
+      ],
+      "status": "CANDIDATE_ONLY",
+      "createdAt": "2026-09-18T20:00:19.473Z",
+      "hashPrefix": "39f74aaa2660"
+    },
+    {
+      "name": "webhook-delivery-debugger",
+      "version": "0.1.0",
+      "description": "Evidence-based debugging package for webhook, email, and WhatsApp-style delivery timelines using supplied logs and events only, with explicit separation of accepted, sent, delivered, read, and failed states plus retry/idempotency/observability checks.",
+      "category": "api-design-review",
+      "tags": [
+        "webhook",
+        "delivery",
+        "idempotency",
+        "observability",
+        "debugging"
+      ],
+      "status": "CANDIDATE_ONLY",
+      "createdAt": "2026-09-18T15:54:10.551Z",
+      "hashPrefix": "c08a7707a978"
+    }
+  ],
+  "automation": {
+    "intervalMinutes": 15,
+    "maxGenerationAttempts": 3,
+    "candidateTrust": "CANDIDATE_ONLY",
+    "agentUseMode": "context-only",
+    "executable": false,
+    "dailyTokenBudget": 1000000,
+    "minRemainingForCall": 10000
+  }
+}

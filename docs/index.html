@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Agent Capability Registry automation dashboard: Factory runs, cost ledger, capability catalog, retries, and agent execution flow.">
+<title>ACR Automation Dashboard</title>
+<link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar">
+  <div class="brand">
+    <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M6 7h20v6H6zM6 19h9v6H6zM19 19h7v6h-7z"/></svg>
+    <div><strong>Agent Capability Registry</strong><span>Automation Dashboard</span></div>
+  </div>
+  <a class="repo-link" href="https://github.com/aiagent-sg-2026/Agent-Capability-Registry">View source</a>
+</header>
+
+<main id="main">
+<section class="hero panel">
+  <div>
+    <p class="eyebrow">PUBLIC / SANITIZED SNAPSHOT</p>
+    <h1>How an AI agent learns reusable capabilities automatically.</h1>
+    <p class="lede">ACR turns small AI-generated knowledge packages into a searchable, evidence-gated capability registry. The Factory discovers work, proposes a package, validates it, reviews it, retries bounded failures, and stores safe <code>CANDIDATE_ONLY</code> context for Codex or Pi.</p>
+  </div>
+  <div class="snapshot">
+    <span>Snapshot generated</span>
+    <strong id="generatedAt">Loading…</strong>
+    <small id="freshness">Static GitHub Pages snapshot</small>
+  </div>
+</section>
+
+<section aria-labelledby="overview-title">
+  <div class="section-title"><div><p class="eyebrow">01 / OVERVIEW</p><h2 id="overview-title">Current automation state</h2></div></div>
+  <div class="kpi-grid" id="kpis" aria-live="polite"></div>
+</section>
+
+<section aria-labelledby="flow-title">
+  <div class="section-title"><div><p class="eyebrow">02 / AUTOMATION</p><h2 id="flow-title">Automation in one minute</h2></div><p>One bounded cycle at a time. No candidate package can execute itself.</p></div>
+  <div class="flow panel" aria-label="Automation flow">
+    <div class="flow-step"><span>1</span><strong>15-min Timer</strong><small>Starts a bounded Factory cycle</small></div><div class="arrow">→</div>
+    <div class="flow-step"><span>2</span><strong>Opportunity Queue</strong><small>Curated first, discovery when empty</small></div><div class="arrow">→</div>
+    <div class="flow-step ai"><span>3</span><strong>AI Proposal</strong><small>Compact Markdown + JSON capability</small></div><div class="arrow">→</div>
+    <div class="flow-step gate"><span>4</span><strong>Deterministic Gate</strong><small>Schema, permissions, paths, quality</small></div><div class="arrow">→</div>
+    <div class="flow-step ai"><span>5</span><strong>AI Review</strong><small>Practicality and domain specificity</small></div><div class="arrow">→</div>
+    <div class="flow-step registry"><span>6</span><strong>Registry</strong><small>CANDIDATE_ONLY, context-only</small></div>
+  </div>
+  <div class="callout"><strong>Bounded retry:</strong> malformed JSON, unsafe candidates, or failed reviews get up to <span id="retryLimit">3</span> attempts. A saved candidate is indexed; it is not installed or executed.</div>
+</section>
+
+<section class="two-col" aria-label="Cost and execution">
+  <div>
+    <div class="section-title"><div><p class="eyebrow">03 / COST LEDGER</p><h2>Token efficiency</h2></div></div>
+    <div class="panel" id="costPanel">
+      <div class="cost-head"><div><span>Today</span><strong id="tokensToday">—</strong><small>tokens</small></div><div><span>Budget remaining</span><strong id="budgetRemaining">—</strong><small id="budgetPct">—</small></div></div>
+      <div class="meter"><i id="budgetMeter"></i></div>
+      <div class="split-stats"><div><span>Prompt</span><strong id="promptTokens">—</strong></div><div><span>Completion</span><strong id="completionTokens">—</strong></div><div><span>Model calls</span><strong id="modelCalls">—</strong></div><div><span>Avg / call</span><strong id="avgTokens">—</strong></div></div>
+      <p class="cost-note" id="costStatus"></p>
+      <h3>By purpose</h3><div id="purposeBars" class="bars"></div>
+      <h3>Last 7 ledger days</h3><div id="dailyBars" class="bars"></div>
+    </div>
+  </div>
+
+  <div>
+    <div class="section-title"><div><p class="eyebrow">04 / TASK EXECUTION</p><h2>What the Factory is doing</h2></div></div>
+    <div class="panel">
+      <div class="outcomes" id="outcomes"></div>
+      <div class="table-wrap">
+        <table>
+          <caption>Recent bounded cycles</caption>
+          <thead><tr><th>Time</th><th>Opportunity</th><th>Outcome</th><th>Tokens used</th></tr></thead>
+          <tbody id="runRows"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="catalog-title">
+  <div class="section-title"><div><p class="eyebrow">05 / CAPABILITY CATALOG</p><h2 id="catalog-title">What the system has learned</h2></div><p>Metadata only. Raw package content and VM paths are never published here.</p></div>
+  <div class="panel">
+    <div class="filters">
+      <label><span>Search capabilities</span><input id="capSearch" type="search" placeholder="ERP, PostgreSQL, webhook…" autocomplete="off"></label>
+      <label><span>Category</span><select id="capCategory"><option value="">All categories</option></select></label>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <caption id="capCount">Capability catalog</caption>
+        <thead><tr><th>Name</th><th>Category</th><th>Status</th><th>Tags</th><th>Created</th></tr></thead>
+        <tbody id="capRows"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="two-col" aria-label="Agent logic and safety">
+  <div>
+    <div class="section-title"><div><p class="eyebrow">06 / AGENT TASK LOGIC</p><h2>How Codex / Pi uses ACR</h2></div></div>
+    <div class="panel agent-logic">
+      <div class="task-example"><span>User task</span><code>“Review this PostgreSQL reporting query”</code></div>
+      <ol>
+        <li><strong>Resolve</strong><span>Reduce task to catalog-relevant terms.</span></li>
+        <li><strong>Search</strong><span>Rank matching capabilities deterministically.</span></li>
+        <li><strong>Info</strong><span>Re-check exact name/version and evidence.</span></li>
+        <li><strong>Select</strong><span>Pick highest-ranked valid candidate.</span></li>
+        <li><strong>Use</strong><span>Build a bounded context-only bundle.</span></li>
+        <li><strong>Run</strong><span>Launch Codex or Pi with original task unchanged.</span></li>
+      </ol>
+    </div>
+  </div>
+  <div>
+    <div class="section-title"><div><p class="eyebrow">07 / SAFETY</p><h2>Trust boundaries</h2></div></div>
+    <div class="panel safety-list">
+      <div><strong>CANDIDATE_ONLY</strong><span>AI generation never becomes trusted automatically.</span></div>
+      <div><strong>executable = false</strong><span>Capability content is reference data, not commands.</span></div>
+      <div><strong>No auto-install</strong><span>Search/use does not install packages or hooks.</span></div>
+      <div><strong>Read-only default</strong><span>Agent runner defaults to a read-only workspace.</span></div>
+      <div><strong>Sanitized public data</strong><span>Dashboard excludes local paths, prompts, content and credentials.</span></div>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="week-title">
+  <div class="section-title"><div><p class="eyebrow">08 / 7-DAY VIEW</p><h2 id="week-title">If the Factory is left running for a week</h2></div></div>
+  <div class="panel week">
+    <div><strong id="weekCycles">672</strong><span>maximum timer opportunities<br><small>7 days × 24h × 4 cycles/hour</small></span></div>
+    <p>Actual capability growth will be lower. Cycles may discover opportunities, retry malformed/unsafe candidates, hit review gates, or find nothing new. The goal is durable quality, not consuming the daily token budget.</p>
+  </div>
+</section>
+
+<section aria-labelledby="data-title">
+  <div class="section-title"><div><p class="eyebrow">09 / DATA MODEL</p><h2 id="data-title">What is public vs private</h2></div></div>
+  <div class="panel data-boundary">
+    <div><strong>Published snapshot</strong><ul><li>Aggregated token counts</li><li>Outcome counts</li><li>Sanitized capability metadata</li><li>Recent cycle IDs and statuses</li></ul></div>
+    <div><strong>Never published</strong><ul><li>Bearer / session credentials</li><li>Raw prompts or package contents</li><li>Full local filesystem paths</li><li>Private VM/runtime details</li></ul></div>
+  </div>
+</section>
+
+<div id="errorState" class="error panel" hidden><strong>Dashboard data unavailable.</strong><span>Run <code>npm run dashboard:export</code> to generate a sanitized snapshot.</span></div>
+</main>
+<footer><span>Agent Capability Registry · Evidence-first capability automation</span><a href="https://github.com/aiagent-sg-2026/Agent-Capability-Registry">GitHub</a></footer>
+<script src="./app.js" defer></script>
+</body>
+</html>
